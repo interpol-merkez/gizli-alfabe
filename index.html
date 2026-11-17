@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPA | Interpol Kripto ve İstihbarat Paneli</title>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            width: 90%;
+            max-width: 600px;
+            border: 1px solid #334155;
+        }
+        h2 {
+            text-align: center;
+            color: #38bdf8;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #cbd5e1;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            background-color: #0f172a;
+            color: #f8fafc;
+            border: 1px solid #475569;
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 16px;
+            resize: none;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #38bdf8;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            flex: 1;
+            background-color: #0284c7;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: #0369a1;
+        }
+        .output-box {
+            background-color: #0f172a;
+            border: 1px solid #475569;
+            border-radius: 6px;
+            padding: 15px;
+            min-height: 50px;
+            word-break: break-all;
+            color: #34d399;
+            font-family: monospace;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🌐 TPA INTERPOL KRİPTO PANELİ</h2>
+        <div class="subtitle">Güvenli İstihbarat ve Sayısal Alfabe Çevirici</div>
+
+        <label for="inputText">Normal Metin veya Kod Girin:</label>
+        <textarea id="inputText" placeholder="Şifrelenecek veya çözülecek metni buraya yazın..."></textarea>
+
+        <div class="btn-group">
+            <button onclick="sifreleA1Z26()">🔒 Sayıya Çevir (A1Z26)</button>
+            <button onclick="cozA1Z26()">🔓 Sayıyı Çöz</button>
+        </div>
+
+        <label>Sonuç:</label>
+        <div id="outputResult" class="output-box">Sonuç burada görünecek...</div>
+    </div>
+
+    <script>
+        // A1Z26 Harf - Sayı Haritası
+        const harfSayi = {
+            'A':'1','B':'2','C':'3','D':'4','E':'5','F':'6','G':'7','H':'8','I':'9','J':'10',
+            'K':'11','L':'12','M':'13','N':'14','O':'15','P':'16','Q':'17','R':'18','S':'19',
+            'T':'20','U':'21','V':'22','W':'23','X':'24','Y':'25','Z':'26', ' ':'/'
+        };
+
+        const sayiHarf = {};
+        for (let key in harfSayi) {
+            sayiHarf[harfSayi[key]] = key;
+        }
+
+        function sifreleA1Z26() {
+            let text = document.getElementById('inputText').value.toUpperCase();
+            let sonuc = [];
+            for (let i = 0; i < text.length; i++) {
+                let char = text[i];
+                if (harfSayi[char]) {
+                    sonuc.push(harfSayi[char]);
+                } else if (char === 'İ') {
+                    sonuc.push('9');
+                } else if (char === 'Ş') {
+                    sonuc.push('19');
+                } else if (char === 'Ğ') {
+                    sonuc.push('7');
+                } else if (char === 'Ü') {
+                    sonuc.push('21');
+                } else if (char === 'Ö') {
+                    sonuc.push('15');
+                } else if (char === 'Ç') {
+                    sonuc.push('3');
+                } else {
+                    sonuc.push(char);
+                }
+            }
+            document.getElementById('outputResult').innerText = sonuc.join('-');
+        }
+
+        function cozA1Z26() {
+            let text = document.getElementById('inputText').value.trim();
+            let parcalar = text.split('-');
+            let sonuc = [];
+            for (let i = 0; i < parcalar.length; i++) {
+                let p = parcalar[i].trim();
+                if (p === '/') {
+                    sonuc.push(' ');
+                } else if (sayiHarf[p]) {
+                    sonuc.push(sayiHarf[p]);
+                } else {
+                    sonuc.push(p);
+                }
+            }
+            document.getElementById('outputResult').innerText = sonuc.join('');
+        }
+    </script>
+
+</body>
+</html>
