@@ -17,6 +17,7 @@
             margin: 0;
             position: relative;
         }
+        /* Arka plan Interpol logosu filigranı */
         body::before {
             content: "";
             position: fixed;
@@ -43,39 +44,143 @@
             position: relative;
             z-index: 1;
         }
-        .signature-footer {
+        h2 {
+            margin-top: 0;
+            color: #38bdf8;
+            text-align: center;
+            font-size: 22px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #94a3b8;
+        }
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #334155;
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-size: 15px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+        textarea:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #38bdf8;
+        }
+        .btn-container {
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .btn-encrypt {
+            background-color: #0284c7;
+            color: white;
+        }
+        .btn-encrypt:hover {
+            background-color: #0369a1;
+        }
+        .btn-decrypt {
+            background-color: #334155;
+            color: white;
+        }
+        .btn-decrypt:hover {
+            background-color: #475569;
+        }
+        /* Sağ alt imza yerine sade yazar etiketi */
+        .footer-tag {
             position: fixed;
             bottom: 15px;
             right: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            z-index: 10;
-            pointer-events: none;
-        }
-        .signature-footer .creator {
             font-size: 13px;
             font-weight: bold;
-            color: #94a3b8;
-            letter-spacing: 1px;
-            margin-bottom: 3px;
+            color: #64748b;
             font-family: monospace;
-        }
-        .signature-footer img {
-            height: 45px;
-            width: auto;
+            z-index: 10;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h2>TPA Kripto Paneli</h2>
-        <p>Sistem aktif ve güvenli bağlantı kuruldu.</p>
+        <h2>TPA Kripto ve İstihbarat Paneli</h2>
+        
+        <div class="input-group">
+            <label for="inputText">Mesaj veya Şifreli Metin:</label>
+            <textarea id="inputText" rows="4" placeholder="Şifrelenecek veya çözülecek metni buraya girin..."></textarea>
+        </div>
+
+        <div class="btn-container">
+            <button class="btn-encrypt" onclick="sifrele()">Şifrele (A1Z26)</button>
+            <button class="btn-decrypt" onclick="coz()">Çöz</button>
+        </div>
+
+        <div class="input-group" style="margin-top: 20px;">
+            <label for="outputText">Sonuç:</label>
+            <textarea id="outputText" rows="4" placeholder="Sonuç burada görünecek..." readonly></textarea>
+        </div>
     </div>
 
-    <div class="signature-footer">
-        <span class="creator">by.cmyl65</span>
-        <img src="ataturk-imza.png" alt="Atatürk İmzası">
-    </div>
+    <div class="footer-tag">by.cmyl65</div>
+
+    <script>
+        // A1Z26 Şifreleme Mantığı
+        const harfMap = {
+            'a': '1', 'b': '2', 'c': '3', 'ç': '4', 'd': '5', 'e': '6', 'f': '7', 'g': '8', 'ğ': '9', 'h': '10',
+            'ı': '11', 'i': '12', 'j': '13', 'k': '14', 'l': '15', 'm': '16', 'n': '17', 'o': '18', 'ö': '19',
+            'p': '20', 'r': '21', 's': '22', 'ş': '23', 't': '24', 'u': '25', 'ü': '26', 'v': '27', 'y': '28', 'z': '29'
+        };
+        
+        // Ters çevrilmiş çözüm haritası
+        const tersMap = {};
+        for (let k in harfMap) {
+            tersMap[harfMap[k]] = k;
+        }
+
+        function sifrele() {
+            let val = document.getElementById('inputText').value.toLowerCase();
+            let sonuc = [];
+            for (let i = 0; i < val.length; i++) {
+                let harf = val[i];
+                if (harfMap[harf]) {
+                    sonuc.push(harfMap[harf]);
+                } else {
+                    sonuc.push(harf; // Boşluklar veya karakterler aynen kalsın
+                }
+            }
+            document.getElementById('outputText').value = sonuc.join('-');
+        }
+
+        function coz() {
+            let val = document.getElementById('inputText').value.trim();
+            let parcalar = val.split('-');
+            let sonuc = [];
+            for (let i = 0; i < parcalar.length; i++) {
+                let kod = parcalar[i];
+                if (tersMap[kod]) {
+                    sonuc.push(tersMap[kod]);
+                } else {
+                    sonuc.push(kod);
+                }
+            }
+            document.getElementById('outputText').value = sonuc.join('');
+        }
+    </script>
 </body>
 </html>
